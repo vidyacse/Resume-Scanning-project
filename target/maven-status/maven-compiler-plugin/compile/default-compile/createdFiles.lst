@@ -1,0 +1,5 @@
+com\example\resumescanner\controller\ResumeController.class
+com\example\resumescanner\ResumeScannerApplication.class
+com\example\resumescanner\model\ResumeCandidate.class
+com\example\resumescanner\util\ResumeParser.class
+com\example\resumescanner\service\ResumeService.class

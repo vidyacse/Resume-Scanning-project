@@ -1,0 +1,1 @@
+package com.example.resumescanner.model; public class ResumeCandidate{ private String name; private String email; private int score; public ResumeCandidate(String n,String e,int s){name=n;email=e;score=s;} public String getName(){return name;} public String getEmail(){return email;} public int getScore(){return score;} }

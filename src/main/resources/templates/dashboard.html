@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Resume Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background: linear-gradient(to right, #667eea, #764ba2);
+        }
+
+        .container {
+            margin-top: 40px;
+        }
+
+        .card {
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        .summary {
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .card1 { background: #ff7eb3; }
+        .card2 { background: #43cea2; }
+        .card3 { background: #ff6a00; }
+
+        .top {
+            background-color: #ffe066 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- 🔥 SUMMARY -->
+    <div class="row text-center mb-4">
+
+        <div class="col-md-4">
+            <div class="summary card1 shadow">
+                <h5>Total Candidates</h5>
+                <h3 th:text="${candidates.size()}"></h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary card2 shadow">
+                <h5>Top Score</h5>
+                <h3 th:text="${candidates.size() > 0 ? candidates[0].score : 0}"></h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary card3 shadow">
+                <h5>Top Candidate</h5>
+                <h3 th:text="${candidates.size() > 0 ? candidates[0].name : 'N/A'}"></h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 📊 CHART -->
+    <div class="card shadow mb-4">
+        <h4 class="text-center">Score Chart</h4>
+        <canvas id="scoreChart"></canvas>
+    </div>
+
+    <!-- 📋 TABLE -->
+    <div class="card shadow">
+
+        <h4 class="text-center mb-3">Ranking</h4>
+
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="c, stat : ${candidates}"
+                th:classappend="${stat.index == 0} ? 'top'">
+
+                <td th:text="${stat.index + 1}"></td>
+                <td th:text="${c.name}"></td>
+                <td th:text="${c.score}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+
+        <a href="/uploadPage" class="btn btn-dark w-100 mt-3">Back</a>
+
+    </div>
+
+</div>
+
+<!-- 📊 Chart Script -->
+<script th:inline="javascript">
+    let candidates = /*[[${candidates}]]*/ [];
+
+    let names = candidates.map(c => c.name);
+    let scores = candidates.map(c => c.score);
+
+    new Chart(document.getElementById('scoreChart'), {
+        type: 'bar',
+        data: {
+            labels: names,
+            datasets: [{
+                label: 'Scores',
+                data: scores
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>
